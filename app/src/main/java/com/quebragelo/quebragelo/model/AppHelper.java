@@ -14,19 +14,56 @@ public class AppHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE statuses (" +
-                      " _id INTEGER PRIMARY KEY, " +
-                Constraint.COLUMN_PERSON_ID + " INTEGER, " +
-                Constraint.COLUMN_LAST_LOGGED + " INTEGER, " +
-                Constraint.COLUMN_LOGGED + " INTEGER);";
-
-
-
-        db.execSQL(sql);
+        createStatuses(db);
+        createLocations(db);
+        createTags(db);
+        createPeople(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    private void createPeople(SQLiteDatabase db){
+        String sql = "CREATE TABLE " + Constraint.TABLE_PERSON + " (" +
+                " _id INTEGER PRIMARY KEY," +
+                Constraint.COLUMN_NAME + " TEXT," +
+                Constraint.COLUMN_EMAIL + " TEXT," +
+                Constraint.COLUMN_BIRTHDAY + " INTEGER," +
+                Constraint.COLUMN_STATUS_ID + " INTEGER," +
+                Constraint.COLUMN_BIO + " TEXT);";
+
+        db.execSQL(sql);
+    }
+
+    private void createTags(SQLiteDatabase db){
+        String sql = "CREATE TABLE " + Constraint.TABLE_TAG + " (" +
+                " _id INTEGER PRIMARY KEY," +
+                Constraint.COLUMN_PERSON_ID + " INTEGER," +
+                Constraint.COLUMN_NAME + " TEXT," +
+                Constraint.COLUMN_DESCRIPTION + " TEXT);";
+
+        db.execSQL(sql);
+    }
+
+    private void createLocations(SQLiteDatabase db){
+        String sql = "CREATE TABLE " + Constraint.TABLE_LOCATION + " (" +
+                " _id INTEGER PRIMARY KEY," +
+                Constraint.COLUMN_PERSON_ID + " INTEGER," +
+                Constraint.COLUMN_LATITUDE + " INTEGER," +
+                Constraint.COLUMN_LONGITUDE + " INTEGER);";
+
+        db.execSQL(sql);
+    }
+
+    private void createStatuses(SQLiteDatabase db){
+        String sql = "CREATE TABLE " + Constraint.TABLE_STATUS + " (" +
+                " _id INTEGER PRIMARY KEY," +
+                Constraint.COLUMN_PERSON_ID + " INTEGER," +
+                Constraint.COLUMN_LAST_LOGGED + " INTEGER," +
+                Constraint.COLUMN_LOGGED + " INTEGER);";
+
+        db.execSQL(sql);
     }
 }

@@ -1,7 +1,6 @@
 package com.quebragelo.quebragelo.vo;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by Bruno Casali on 21/04/2015.
