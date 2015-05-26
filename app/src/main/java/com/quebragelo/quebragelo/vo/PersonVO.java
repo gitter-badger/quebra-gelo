@@ -1,5 +1,7 @@
 package com.quebragelo.quebragelo.vo;
 
+import com.facebook.AccessToken;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +18,15 @@ public class PersonVO implements Serializable {
     private String name;
     private StatusVO status;
     private List<TagVO> tags;
+    private AccessToken token;
+
+    public AccessToken getToken() {
+        return AccessToken.getCurrentAccessToken();
+    }
+
+    public void setToken(AccessToken token) {
+        this.token = token;
+    }
 
     public String getBio() {
         return bio;
