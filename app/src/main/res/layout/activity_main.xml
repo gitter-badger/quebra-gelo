@@ -12,21 +12,26 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Quebra Gelo!"
-        android:id="@+id/textView"
+        android:text="@string/QuebraGelo"
+        android:id="@+id/txtTitle"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:password="false"
-        android:phoneNumber="false" />
+        android:phoneNumber="false"
+        android:textSize="100dp"
+        android:textIsSelectable="false"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textColor="#000"/>
 
     <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="65dp"
             android:layout_gravity="center_horizontal"
-            android:layout_alignParentBottom="true" android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>
