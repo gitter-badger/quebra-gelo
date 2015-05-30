@@ -19,26 +19,26 @@
         android:phoneNumber="false"
         android:textSize="100dp"
         android:textIsSelectable="false"
-        android:layout_alignParentEnd="true"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:textColor="#000"/>
+        android:textColor="#000"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="30dp" />
 
     <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="65dp"
             android:layout_gravity="center_horizontal"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-        />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:id="@+id/imgFriend"
-        android:src="@mipmap/friends"
+        android:src="@mipmap/wall"
         android:layout_alignEnd="@+id/txtTitle"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/txtTitle"
@@ -46,6 +46,16 @@
         android:scaleType="centerCrop"
         android:longClickable="false"
         android:focusable="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/texto"
+        android:id="@+id/textView"
+        android:layout_above="@+id/imgFriend"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffbbbbbb" />
 
 
 </RelativeLayout>
