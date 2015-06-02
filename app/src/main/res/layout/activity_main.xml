@@ -34,28 +34,25 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:id="@+id/imgFriend"
-        android:src="@mipmap/wall"
-        android:layout_alignEnd="@+id/txtTitle"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/txtTitle"
-        android:layout_above="@+id/login_button"
-        android:scaleType="centerCrop"
-        android:longClickable="false"
-        android:focusable="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/texto"
         android:id="@+id/textView"
-        android:layout_above="@+id/imgFriend"
-        android:layout_centerHorizontal="true"
-        android:textColor="#ffbbbbbb" />
+        android:textColor="#ffbbbbbb"
+        android:layout_below="@+id/txtTitle"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/textView"
+        android:src="@mipmap/login"
+        android:layout_above="@+id/login_button"
+        android:layout_alignEnd="@+id/txtTitle"
+        android:layout_alignStart="@+id/txtTitle" />
 
 
 </RelativeLayout>
