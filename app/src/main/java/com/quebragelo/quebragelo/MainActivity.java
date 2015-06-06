@@ -73,7 +73,6 @@ public class MainActivity extends Activity {
         TextView txt = (TextView) findViewById(R.id.txtTitle);
         Typeface font = Typeface.createFromAsset(getAssets(), "Generally Speaking.ttf" );
         txt.setTypeface(font);
-
     }
 
     @Override
