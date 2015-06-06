@@ -1,17 +1,85 @@
 package com.quebragelo.quebragelo;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.Window;
+import android.widget.TextView;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
-public class MainActivity extends ActionBarActivity {
+import java.util.Arrays;
+
+public class MainActivity extends Activity {
+
+    private CallbackManager callbackManager;
+    private ProfileTracker profileTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
+
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+
+        loginButton.setReadPermissions(Arrays.asList("user_status", "user_birthday", "email", "user_about_me"));
+
+        callbackManager = CallbackManager.Factory.create();
+        loginButton.registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        // App code
+                        System.out.println("DEU CERTOOOOO");
+                        System.out.println(loginResult);
+                        // salvar os dados do user aqui ?
+
+                        profileTracker = new ProfileTracker() {
+                            @Override
+                            protected void onCurrentProfileChanged(
+                                    Profile oldProfile,
+                                    Profile currentProfile) {
+                                // App code
+
+                            }
+                        };
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        System.out.println("NOPEs!");
+                        System.out.println(exception);
+                    }
+                });
+
+        TextView txt = (TextView) findViewById(R.id.txtTitle);
+        Typeface font = Typeface.createFromAsset(getAssets(), "Generally Speaking.ttf" );
+        txt.setTypeface(font);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -22,17 +90,18 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    protected void onResume() {
+        super.onResume();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        // Logs 'install' and 'app activate' App Events.
+        AppEventsLogger.activateApp(this);
+    }
 
-        return super.onOptionsItemSelected(item);
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
     }
 }
