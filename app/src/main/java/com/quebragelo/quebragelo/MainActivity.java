@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.Window;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.facebook.CallbackManager;
@@ -17,6 +18,7 @@ import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.quebragelo.quebragelo.adapter.PictureAdapter;
 
 import java.util.Arrays;
 
@@ -73,6 +75,12 @@ public class MainActivity extends Activity {
         TextView txt = (TextView) findViewById(R.id.txtTitle);
         Typeface font = Typeface.createFromAsset(getAssets(), "Generally Speaking.ttf" );
         txt.setTypeface(font);
+
+        int[] lista = new int[]{R.mipmap.picture_01, R.mipmap.picture_02, R.mipmap.picture_03};
+
+        GridView gv = (GridView) findViewById(R.id.personView);
+        gv.setAdapter(new PictureAdapter(this, lista));
+
 
     }
 
