@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -80,6 +83,14 @@ public class MainActivity extends Activity {
 
         GridView gv = (GridView) findViewById(R.id.personView);
         gv.setAdapter(new PictureAdapter(this, lista));
+
+
+        gv.setOnItemClickListener(new GridView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                Toast.makeText(getBaseContext(), "Imagem" + (position + 1), Toast.LENGTH_SHORT).show();
+            }
+        } );
 
 
     }

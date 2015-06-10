@@ -41,6 +41,7 @@ public class PictureAdapter extends BaseAdapter {
 
         ImageView iv = new ImageView(context);
         iv.setImageResource(lista[position]);
+        //Ajusta o tamanho do imageview com o tamanho da colona
         iv.setAdjustViewBounds(true);
 
 
