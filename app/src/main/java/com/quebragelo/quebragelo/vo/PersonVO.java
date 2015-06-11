@@ -11,13 +11,15 @@ import java.util.List;
  */
 public class PersonVO implements Serializable {
 
+    public static final String API_PATH = "people/";
+
     private String bio;
     private Date birthday;
     private String email;
     private LocationVO location;
     private String name;
     private StatusVO status;
-    private List<TagVO> tags;
+    private List<String> tags;
     private AccessToken token;
 
     public AccessToken getToken() {
@@ -76,11 +78,11 @@ public class PersonVO implements Serializable {
         this.status = status;
     }
 
-    public List<TagVO> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(List<TagVO> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 }

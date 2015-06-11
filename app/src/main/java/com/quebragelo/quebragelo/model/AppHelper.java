@@ -3,6 +3,7 @@ package com.quebragelo.quebragelo.model;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import com.quebragelo.quebragelo.helper.Constraint;
 
 /**
  * Created by Bruno Casali on 24/04/2015.

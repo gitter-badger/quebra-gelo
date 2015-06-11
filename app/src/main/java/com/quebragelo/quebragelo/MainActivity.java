@@ -7,16 +7,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.Window;
 import android.widget.TextView;
-
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
+import com.facebook.*;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.quebragelo.quebragelo.task.AddPersonTask;
+import com.quebragelo.quebragelo.vo.PersonVO;
 
 import java.util.Arrays;
 
@@ -42,10 +38,15 @@ public class MainActivity extends Activity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        // App code
-                        System.out.println("DEU CERTOOOOO");
-                        System.out.println(loginResult);
-                        // salvar os dados do user aqui ?
+                        AddPersonTask task = new AddPersonTask();
+
+                        PersonVO person = new PersonVO();
+
+                        person.setToken(loginResult.getAccessToken());
+                        person.setEmail("");
+                        person.setName("");
+
+                        task.execute(person);
 
                         profileTracker = new ProfileTracker() {
                             @Override

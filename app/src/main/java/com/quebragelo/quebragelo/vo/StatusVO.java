@@ -1,12 +1,14 @@
 package com.quebragelo.quebragelo.vo;
 
+import com.quebragelo.quebragelo.helper.WebSerializable;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Bruno Casali on 21/04/2015.
  */
-public class StatusVO implements Serializable {
+public class StatusVO implements Serializable, WebSerializable {
 
     private PersonVO person;
     private Date last;
@@ -34,5 +36,10 @@ public class StatusVO implements Serializable {
 
     public void setLastLogged(Date lastLogged) {
         this.lastLogged = lastLogged;
+    }
+
+    @Override
+    public String getPathAddress() {
+        return "statuses/";
     }
 }
