@@ -2,12 +2,10 @@ package com.quebragelo.quebragelo.vo;
 
 import com.quebragelo.quebragelo.helper.WebAddressable;
 
-import java.io.Serializable;
-
 /**
  * Created by Bruno Casali on 21/04/2015.
  */
-public class LocationVO implements Serializable, WebAddressable {
+public class LocationVO implements WebAddressable {
 
     private Long longitude;
     private Long latitude;

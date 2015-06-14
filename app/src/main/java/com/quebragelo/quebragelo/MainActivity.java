@@ -5,12 +5,17 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.facebook.*;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.quebragelo.quebragelo.adapter.PictureAdapter;
 import com.quebragelo.quebragelo.helper.Constraint;
 import com.quebragelo.quebragelo.task.AddPersonTask;
 import com.quebragelo.quebragelo.vo.PersonVO;
@@ -77,6 +82,19 @@ public class MainActivity extends Activity {
         TextView txt = (TextView) findViewById(R.id.txtTitle);
         Typeface font = Typeface.createFromAsset(getAssets(), "Generally Speaking.ttf" );
         txt.setTypeface(font);
+
+        int[] lista = new int[]{R.mipmap.picture_01, R.mipmap.picture_02, R.mipmap.picture_03};
+
+        GridView gv = (GridView) findViewById(R.id.personView);
+        gv.setAdapter(new PictureAdapter(this, lista));
+
+
+        gv.setOnItemClickListener(new GridView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView parent, View view, int position, long id) {
+                Toast.makeText(getBaseContext(), "Imagem" + (position + 1), Toast.LENGTH_SHORT).show();
+            }
+        } );
     }
 
     @Override

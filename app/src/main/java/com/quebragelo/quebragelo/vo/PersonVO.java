@@ -3,13 +3,12 @@ package com.quebragelo.quebragelo.vo;
 import com.quebragelo.quebragelo.helper.JSONSerializer;
 import com.quebragelo.quebragelo.helper.WebAddressable;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Bruno Casali on 21/04/2015.
  */
-public class PersonVO extends JSONSerializer implements Serializable, WebAddressable {
+public class PersonVO extends JSONSerializer implements WebAddressable {
 
     private String bio;
     private Date birthday_at;
