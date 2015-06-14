@@ -20,7 +20,6 @@ public class PictureAdapter extends BaseAdapter {
 
     }
 
-
     @Override
     public int getCount() {
         return lista.length;

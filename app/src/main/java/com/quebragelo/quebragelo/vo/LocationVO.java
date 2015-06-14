@@ -1,11 +1,11 @@
 package com.quebragelo.quebragelo.vo;
 
-import java.io.Serializable;
+import com.quebragelo.quebragelo.helper.WebAddressable;
 
 /**
  * Created by Bruno Casali on 21/04/2015.
  */
-public class LocationVO implements Serializable {
+public class LocationVO implements WebAddressable {
 
     private Long longitude;
     private Long latitude;
@@ -33,5 +33,10 @@ public class LocationVO implements Serializable {
 
     public void setLatitude(Long latitude) {
         this.latitude = latitude;
+    }
+
+    @Override
+    public String getPath() {
+        return "location/";
     }
 }
