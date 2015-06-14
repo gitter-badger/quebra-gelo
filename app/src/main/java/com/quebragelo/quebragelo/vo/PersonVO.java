@@ -1,33 +1,39 @@
 package com.quebragelo.quebragelo.vo;
 
-import com.facebook.AccessToken;
+import com.quebragelo.quebragelo.helper.JSONSerializer;
+import com.quebragelo.quebragelo.helper.WebAddressable;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Bruno Casali on 21/04/2015.
  */
-public class PersonVO implements Serializable {
-
-    public static final String API_PATH = "people/";
+public class PersonVO extends JSONSerializer implements Serializable, WebAddressable {
 
     private String bio;
-    private Date birthday;
+    private Date birthday_at;
     private String email;
+    private String image;
     private LocationVO location;
     private String name;
     private StatusVO status;
-    private List<String> tags;
-    private AccessToken token;
+    private String fb_access_token;
 
-    public AccessToken getToken() {
-        return AccessToken.getCurrentAccessToken();
+    public String getFbAccessToken() {
+        return fb_access_token;
     }
 
-    public void setToken(AccessToken token) {
-        this.token = token;
+    public void setFbAccessToken(String fbAccessToken) {
+        this.fb_access_token = fbAccessToken;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getBio() {
@@ -38,12 +44,12 @@ public class PersonVO implements Serializable {
         this.bio = bio;
     }
 
-    public Date getBirthday() {
-        return birthday;
+    public Date getBirthdayAt() {
+        return birthday_at;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+    public void setBirthdayAt(Date birthdayAt) {
+        this.birthday_at = birthdayAt;
     }
 
     public String getEmail() {
@@ -78,11 +84,13 @@ public class PersonVO implements Serializable {
         this.status = status;
     }
 
-    public List<String> getTags() {
-        return tags;
+    @Override
+    public String getPath() {
+        return "people/";
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    @Override
+    public String getSerializerKey() {
+        return "person";
     }
 }

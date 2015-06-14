@@ -5,5 +5,9 @@ package com.quebragelo.quebragelo.helper;
  */
 public class Constraint {
     public static final String WEB_API_VERSION = "v1/";
-    public static final String WEB_API_DOMAIN = "http://quebra-gelo.herokuapp.com/api/" + WEB_API_VERSION;
+    public static final String WEB_API_DOMAIN = "http://quebra-gelo.herokuapp.com/api/";
+
+    public static final int PROFILE_IMAGE_WIDTH = 100;
+    public static final int PROFILE_IMAGE_HEIGHT = 100;
+
 }

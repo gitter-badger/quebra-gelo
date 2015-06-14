@@ -11,15 +11,23 @@ import com.facebook.*;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.quebragelo.quebragelo.helper.Constraint;
 import com.quebragelo.quebragelo.task.AddPersonTask;
 import com.quebragelo.quebragelo.vo.PersonVO;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 public class MainActivity extends Activity {
 
     private CallbackManager callbackManager;
     private ProfileTracker profileTracker;
+    private PersonVO person;
+    private AddPersonTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,28 +41,24 @@ public class MainActivity extends Activity {
 
         loginButton.setReadPermissions(Arrays.asList("user_status", "user_birthday", "email", "user_about_me"));
 
+        task = new AddPersonTask(this);
+
         callbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        AddPersonTask task = new AddPersonTask();
-
-                        PersonVO person = new PersonVO();
-
-                        person.setToken(loginResult.getAccessToken());
-                        person.setEmail("");
-                        person.setName("");
-
-                        task.execute(person);
+                    public void onSuccess(final LoginResult loginResult) {
+                        person = new PersonVO();
 
                         profileTracker = new ProfileTracker() {
                             @Override
                             protected void onCurrentProfileChanged(
                                     Profile oldProfile,
                                     Profile currentProfile) {
-                                // App code
 
+                                person.setImage(currentProfile.getProfilePictureUri(Constraint.PROFILE_IMAGE_WIDTH, Constraint.PROFILE_IMAGE_HEIGHT).getPath());
+
+                                createPerson(loginResult.getAccessToken());
                             }
                         };
                     }
@@ -66,7 +70,6 @@ public class MainActivity extends Activity {
 
                     @Override
                     public void onError(FacebookException exception) {
-                        System.out.println("NOPEs!");
                         System.out.println(exception);
                     }
                 });
@@ -104,4 +107,38 @@ public class MainActivity extends Activity {
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }
+
+    public void createPerson(final AccessToken accessToken){
+        GraphRequest request = GraphRequest.newMeRequest(accessToken,
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        try {
+                            person.setEmail(object.getString("email"));
+                            person.setFbAccessToken(accessToken.getToken());
+                            person.setName(object.getString("name"));
+//                          person.setBio(object.getString("bio"));
+
+                            person.setBirthdayAt(new Date(new SimpleDateFormat("MM/dd/yyyy").parse(object.getString("birthday")).getTime()));
+
+                            task.execute(person);
+                        } catch (JSONException e) {
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,link,email,bio,birthday,about");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+    public void close(){
+        setResult(0);
+        // abrir ooutra activity
+//        finish();
+    }
 }
+

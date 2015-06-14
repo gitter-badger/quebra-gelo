@@ -1,6 +1,6 @@
 package com.quebragelo.quebragelo.vo;
 
-import com.quebragelo.quebragelo.helper.WebSerializable;
+import com.quebragelo.quebragelo.helper.WebAddressable;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by Bruno Casali on 21/04/2015.
  */
-public class StatusVO implements Serializable, WebSerializable {
+public class StatusVO implements Serializable, WebAddressable {
 
     private PersonVO person;
     private Date last;
@@ -39,7 +39,7 @@ public class StatusVO implements Serializable, WebSerializable {
     }
 
     @Override
-    public String getPathAddress() {
+    public String getPath() {
         return "statuses/";
     }
 }

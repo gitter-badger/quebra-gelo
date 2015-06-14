@@ -1,13 +1,13 @@
 package com.quebragelo.quebragelo.vo;
 
-import com.quebragelo.quebragelo.helper.WebSerializable;
+import com.quebragelo.quebragelo.helper.WebAddressable;
 
 import java.io.Serializable;
 
 /**
  * Created by Bruno Casali on 21/04/2015.
  */
-public class LocationVO implements Serializable, WebSerializable {
+public class LocationVO implements Serializable, WebAddressable {
 
     private Long longitude;
     private Long latitude;
@@ -38,7 +38,7 @@ public class LocationVO implements Serializable, WebSerializable {
     }
 
     @Override
-    public String getPathAddress() {
-        return "locations/";
+    public String getPath() {
+        return "location/";
     }
 }

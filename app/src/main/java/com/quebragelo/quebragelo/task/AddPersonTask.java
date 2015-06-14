@@ -1,7 +1,6 @@
 package com.quebragelo.quebragelo.task;
 
 import android.os.AsyncTask;
-import com.google.gson.Gson;
 import com.quebragelo.quebragelo.MainActivity;
 import com.quebragelo.quebragelo.helper.URLMaker;
 import com.quebragelo.quebragelo.vo.PersonVO;
@@ -17,26 +16,25 @@ import java.net.URL;
 public class AddPersonTask extends AsyncTask<PersonVO, Void, Void> {
 
     private MainActivity activity;
-//
-//    public AddPersonTask(MainActivity activity){
-//        this.activity = activity;
-//    }
+
+    public AddPersonTask(MainActivity activity){
+        this.activity = activity;
+    }
 
     @Override
     protected Void doInBackground(PersonVO... params) {
-
         try {
             PersonVO person = params[0];
-            String msg = new Gson().toJson(person);
-            URL url = URLMaker.create(PersonVO.API_PATH);
+            String msg = person.toJSON();
+            URL url = URLMaker.create(person);
 
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setReadTimeout(10000);
             con.setConnectTimeout(15000);
             con.setRequestMethod("POST");
 
-            con.setDoInput(false);
-            con.setDoOutput(true);
+            con.setDoInput(true);
+            con.setDoOutput(false);
 
             con.setRequestProperty("Content-Type", "application/json;charset=utf-8");
             con.setRequestProperty("X-Request-With", "XMLHttpRequest");
@@ -52,13 +50,13 @@ public class AddPersonTask extends AsyncTask<PersonVO, Void, Void> {
 
             publishProgress();
         }catch (Exception e) {
-
+            e.printStackTrace();
         }
         return null;
     }
 
     @Override
     protected void onProgressUpdate(Void... values) {
-//        this.activity.finalizar();
+        this.activity.close();
     }
 }
