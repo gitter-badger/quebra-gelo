@@ -1,87 +1,66 @@
 package com.quebragelo.quebragelo.view;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Movie;
-import android.os.SystemClock;
-import android.util.AttributeSet;
-import android.view.View;
-import com.quebragelo.quebragelo.R;
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.widget.ImageView;
 
 import java.io.InputStream;
 
-public class GifView extends View {
+public class GifView extends ImageView {
 
-	private InputStream gifInputStream;
-	private Movie gifMovie;
-	private int movieWidth, movieHeight;
-	private long movieDuration;
-	private long movieStart;
+    private boolean mIsPlayingGif = false;
 
-	public GifView(Context context) {
-		super(context);
-		init(context);
-	}
+    private GifDecoder mGifDecoder;
 
-	public GifView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init(context);
-	}
+    private Bitmap mTmpBitmap;
 
-	public GifView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-		init(context);
-	}
+    final Handler mHandler = new Handler();
 
-	private void init(Context context) {
-		setFocusable(true);
-		gifInputStream = context.getResources().openRawResource(R.drawable.loading);
+    final Runnable mUpdateResults = new Runnable() {
+        public void run() {
+            if (mTmpBitmap != null && !mTmpBitmap.isRecycled()) {
+                GifView.this.setImageBitmap(mTmpBitmap);
+            }
+        }
+    };
 
-		gifMovie = Movie.decodeStream(gifInputStream);
-		movieWidth = gifMovie.width();
-		movieHeight = gifMovie.height();
-		movieDuration = gifMovie.duration();
-	}
+    public GifView(Context context, InputStream stream) {
+        super(context);
+        playGif(stream);
+    }
 
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		setMeasuredDimension(movieWidth, movieHeight);
-	}
+    private void playGif(InputStream stream) {
+        mGifDecoder = new GifDecoder();
+        mGifDecoder.read(stream);
 
-	public int getMovieWidth() {
-		return movieWidth;
-	}
+        mIsPlayingGif = true;
 
-	public int getMovieHeight() {
-		return movieHeight;
-	}
+        new Thread(new Runnable() {
+            public void run() {
+                final int n = mGifDecoder.getFrameCount();
+                final int ntimes = mGifDecoder.getLoopCount();
+                int repetitionCounter = 0;
+                do {
+                    for (int i = 0; i < n; i++) {
+                        mTmpBitmap = mGifDecoder.getFrame(i);
+                        int t = mGifDecoder.getDelay(i);
+                        mHandler.post(mUpdateResults);
+                        try {
+                            Thread.sleep(t);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if(ntimes != 0) {
+                        repetitionCounter ++;
+                    }
+                } while (mIsPlayingGif && (repetitionCounter <= ntimes));
+            }
+        }).start();
+    }
 
-	public long getMovieDuration() {
-		return movieDuration;
-	}
-
-	@Override
-	protected void onDraw(Canvas canvas) {
-
-		long now = SystemClock.uptimeMillis();
-
-		if(movieStart == 0) {
-			movieStart = now;
-		}
-
-		if(gifMovie != null) {
-
-			int dur = gifMovie.duration();
-			if(dur == 0) {
-				dur = 1000;
-			}
-
-			int relTime = (int)((now - movieStart) % dur);
-
-			gifMovie.setTime(relTime);
-
-			gifMovie.draw(canvas, 0, 0);
-			invalidate();
-		}
-	}
+    public void stopRendering() {
+        mIsPlayingGif = true;
+    }
 }

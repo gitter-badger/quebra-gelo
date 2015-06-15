@@ -1,7 +1,6 @@
 package com.quebragelo.quebragelo.task;
 
 import android.os.AsyncTask;
-import com.quebragelo.quebragelo.MainActivity;
 import com.quebragelo.quebragelo.helper.URLMaker;
 import com.quebragelo.quebragelo.vo.PersonVO;
 
