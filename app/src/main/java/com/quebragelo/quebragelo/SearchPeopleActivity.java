@@ -3,10 +3,7 @@ package com.quebragelo.quebragelo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
-import com.quebragelo.quebragelo.view.GifView;
-
-import java.io.IOException;
-import java.io.InputStream;
+import android.webkit.WebView;
 
 /**
  * Created by bruno on 14/06/15.
@@ -19,13 +16,7 @@ public class SearchPeopleActivity extends Activity {
 
         setContentView(R.layout.search_people_load);
 
-        try {
-            InputStream stream = getAssets().open("loading.gif");
-
-            GifView view = new GifView(this, stream);
-            setContentView(view);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        WebView webView = (WebView) findViewById(R.id.webView);
+        webView.loadUrl("file:///android_asset/loading.html");
     }
 }

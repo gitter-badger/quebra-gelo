@@ -11,6 +11,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.quebragelo.quebragelo.helper.Constraint;
+import com.quebragelo.quebragelo.task.AddPersonTask;
 import com.quebragelo.quebragelo.vo.PersonVO;
 import org.json.JSONObject;
 
@@ -118,7 +119,7 @@ public class MainActivity extends Activity {
 
                             person.setBirthdayAt(new Date(new SimpleDateFormat("MM/dd/yyyy").parse(object.getString("birthday")).getTime()));
 
-//                            new AddPersonTask().execute(person);
+                            new AddPersonTask().execute(person);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
