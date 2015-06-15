@@ -4,25 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.facebook.*;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.quebragelo.quebragelo.adapter.PictureAdapter;
 import com.quebragelo.quebragelo.helper.Constraint;
 import com.quebragelo.quebragelo.task.AddPersonTask;
 import com.quebragelo.quebragelo.vo.PersonVO;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -32,7 +24,6 @@ public class MainActivity extends Activity {
     private CallbackManager callbackManager;
     private ProfileTracker profileTracker;
     private PersonVO person;
-    private AddPersonTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +37,6 @@ public class MainActivity extends Activity {
 
         loginButton.setReadPermissions(Arrays.asList("user_status", "user_birthday", "email", "user_about_me"));
 
-        task = new AddPersonTask(this);
-
         callbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -57,11 +46,9 @@ public class MainActivity extends Activity {
 
                         profileTracker = new ProfileTracker() {
                             @Override
-                            protected void onCurrentProfileChanged(
-                                    Profile oldProfile,
-                                    Profile currentProfile) {
-
-                                person.setImage(currentProfile.getProfilePictureUri(Constraint.PROFILE_IMAGE_WIDTH, Constraint.PROFILE_IMAGE_HEIGHT).getPath());
+                            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                                person.setImage(currentProfile.getProfilePictureUri(Constraint.PROFILE_IMAGE_WIDTH,
+                                        Constraint.PROFILE_IMAGE_HEIGHT).getPath());
 
                                 createPerson(loginResult.getAccessToken());
                             }
@@ -80,34 +67,27 @@ public class MainActivity extends Activity {
                 });
 
         TextView txt = (TextView) findViewById(R.id.txtTitle);
-        Typeface font = Typeface.createFromAsset(getAssets(), "Generally Speaking.ttf" );
+        Typeface font = Typeface.createFromAsset(getAssets(), "Generally Speaking.ttf");
         txt.setTypeface(font);
 
-        int[] lista = new int[]{R.mipmap.picture_01, R.mipmap.picture_02, R.mipmap.picture_03};
+//        int[] lista = new int[]{R.mipmap.picture_01, R.mipmap.picture_02, R.mipmap.picture_03};
 
-        GridView gv = (GridView) findViewById(R.id.personView);
-        gv.setAdapter(new PictureAdapter(this, lista));
+//        GridView gv = (GridView) findViewById(R.id.personView);
+//        gv.setAdapter(new PictureAdapter(this, lista));
 
 
-        gv.setOnItemClickListener(new GridView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), "Imagem" + (position + 1), Toast.LENGTH_SHORT).show();
-            }
-        } );
+//        gv.setOnItemClickListener(new GridView.OnItemClickListener(){
+//            @Override
+//            public void onItemClick(AdapterView parent, View view, int position, long id) {
+//                Toast.makeText(getBaseContext(), "Imagem" + (position + 1), Toast.LENGTH_SHORT).show();
+//            }
+//        } );
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     @Override
@@ -139,11 +119,15 @@ public class MainActivity extends Activity {
 
                             person.setBirthdayAt(new Date(new SimpleDateFormat("MM/dd/yyyy").parse(object.getString("birthday")).getTime()));
 
-                            task.execute(person);
-                        } catch (JSONException e) {
-                        } catch (ParseException e) {
+                            new AddPersonTask().execute(person);
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
+
+                        Intent intent = new Intent(getApplicationContext(), SearchPeopleActivity.class);
+//                        intent.putExtra("Fb_id", user.getId());
+//                        intent.putExtra("user_name", user.getName());
+                        startActivity(intent);
                     }
                 });
 
@@ -151,12 +135,6 @@ public class MainActivity extends Activity {
         parameters.putString("fields", "id,name,link,email,bio,birthday,about");
         request.setParameters(parameters);
         request.executeAsync();
-    }
-
-    public void close(){
-        setResult(0);
-        // abrir ooutra activity
-//        finish();
     }
 }
 

@@ -15,12 +15,6 @@ import java.net.URL;
  */
 public class AddPersonTask extends AsyncTask<PersonVO, Void, Void> {
 
-    private MainActivity activity;
-
-    public AddPersonTask(MainActivity activity){
-        this.activity = activity;
-    }
-
     @Override
     protected Void doInBackground(PersonVO... params) {
         try {
@@ -48,15 +42,9 @@ public class AddPersonTask extends AsyncTask<PersonVO, Void, Void> {
             os.close();
             con.disconnect();
 
-            publishProgress();
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    protected void onProgressUpdate(Void... values) {
-        this.activity.close();
     }
 }
