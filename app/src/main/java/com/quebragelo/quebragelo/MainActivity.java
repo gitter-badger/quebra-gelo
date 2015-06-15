@@ -3,7 +3,9 @@ package com.quebragelo.quebragelo;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.Window;
 import android.widget.TextView;
 import com.facebook.*;
@@ -34,6 +36,19 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+
+        float fbIconScale = 2.05F;
+        Drawable drawable = ContextCompat.getDrawable(this, com.facebook.R.drawable.com_facebook_button_icon);
+
+        drawable.setBounds(0, 0, (int) (drawable.getIntrinsicWidth() * fbIconScale), (int) (drawable.getIntrinsicHeight() * fbIconScale));
+        loginButton.setCompoundDrawables(drawable, null, null, null);
+
+        loginButton.setCompoundDrawablePadding(this.getResources().
+                getDimensionPixelSize(R.dimen.fb_margin_override_textpadding));
+
+        loginButton.setPadding(this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_lr),
+                this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_top), 0,
+                this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_bottom));
 
         loginButton.setReadPermissions(Arrays.asList("user_status", "user_birthday", "email", "user_about_me"));
 
