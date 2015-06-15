@@ -8,4 +8,6 @@
     <string name="app_id">616709811797639</string>
     <string name="QuebraGelo">Quebra Gelo</string>
     <string name="texto">Que tal fazer novos amigos?</string>
+    <string name="generally_speak">Generally Speaking.ttf</string>
+    <string name="image_description">A image representing the internal grid!</string>
 </resources>

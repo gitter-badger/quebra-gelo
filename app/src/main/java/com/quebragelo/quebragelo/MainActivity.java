@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.facebook.*;
 import com.facebook.appevents.AppEventsLogger;
@@ -43,8 +44,7 @@ public class MainActivity extends Activity {
         drawable.setBounds(0, 0, (int) (drawable.getIntrinsicWidth() * fbIconScale), (int) (drawable.getIntrinsicHeight() * fbIconScale));
         loginButton.setCompoundDrawables(drawable, null, null, null);
 
-        loginButton.setCompoundDrawablePadding(this.getResources().
-                getDimensionPixelSize(R.dimen.fb_margin_override_textpadding));
+        loginButton.setCompoundDrawablePadding(this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_textpadding));
 
         loginButton.setPadding(this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_lr),
                 this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_top), 0,
@@ -83,7 +83,11 @@ public class MainActivity extends Activity {
 
         TextView txt = (TextView) findViewById(R.id.txtTitle);
         Typeface font = Typeface.createFromAsset(getAssets(), "Generally Speaking.ttf");
+        txt.setTextSize(102);
         txt.setTypeface(font);
+
+        ImageView img = (ImageView) findViewById(R.id.imageView);
+        img.setImageResource(R.mipmap.image_grid);
 
 //        int[] lista = new int[]{R.mipmap.picture_01, R.mipmap.picture_02, R.mipmap.picture_03};
 
@@ -147,8 +151,7 @@ public class MainActivity extends Activity {
         request.executeAsync();
 
         Intent intent = new Intent(getApplicationContext(), SearchPeopleActivity.class);
-//                        intent.putExtra("Fb_id", user.getId());
-//                        intent.putExtra("user_name", user.getName());
+        // set any content here to be used in all application.
         startActivity(intent);
     }
 }
