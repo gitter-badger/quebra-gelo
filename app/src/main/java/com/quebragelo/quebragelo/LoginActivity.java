@@ -22,10 +22,9 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-public class MainActivity extends Activity {
+public class LoginActivity extends Activity {
 
     private CallbackManager callbackManager;
-    private ProfileTracker profileTracker;
     private PersonVO person;
 
     @Override
@@ -59,7 +58,7 @@ public class MainActivity extends Activity {
                     public void onSuccess(final LoginResult loginResult) {
                         person = new PersonVO();
 
-                        profileTracker = new ProfileTracker() {
+                       new ProfileTracker() {
                             @Override
                             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                                 person.setImage(currentProfile.getProfilePictureUri(Constraint.PROFILE_IMAGE_WIDTH,
@@ -131,10 +130,18 @@ public class MainActivity extends Activity {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         try {
-                            person.setEmail(object.getString("email"));
                             person.setFbAccessToken(accessToken.getToken());
-                            person.setName(object.getString("name"));
-//                          person.setBio(object.getString("bio"));
+                            if (object.has("email"))
+                                person.setEmail(object.getString("email"));
+
+                            if (object.has("phone"))
+                                person.setPhone(object.getString("phone"));
+
+                            if (object.has("name"))
+                                person.setName(object.getString("name"));
+
+                            if (object.has("bio"))
+                                person.setBio(object.getString("bio"));
 
                             person.setBirthdayAt(new Date(new SimpleDateFormat("MM/dd/yyyy").parse(object.getString("birthday")).getTime()));
 

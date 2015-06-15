@@ -14,6 +14,7 @@ public class PersonVO extends JSONSerializer implements WebAddressable {
     private Date birthday_at;
     private String email;
     private String image;
+    private String phone;
     private LocationVO location;
     private String name;
     private StatusVO status;
@@ -25,6 +26,14 @@ public class PersonVO extends JSONSerializer implements WebAddressable {
 
     public void setFbAccessToken(String fbAccessToken) {
         this.fb_access_token = fbAccessToken;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getImage() {
