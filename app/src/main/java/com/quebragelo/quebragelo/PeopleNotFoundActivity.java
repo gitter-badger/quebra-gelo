@@ -15,5 +15,9 @@ public class PeopleNotFoundActivity extends Activity {
 
         ImageView img = (ImageView) findViewById(R.id.imageView5);
         img.setImageResource(R.mipmap.notpeople);
+
+        
+
+
     }
 }
