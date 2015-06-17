@@ -18,7 +18,7 @@
 
         <activity android:name=".LoginActivity" android:label="@string/app_name"/>
         <activity android:name=".SearchPeopleActivity" android:label="@string/app_name"/>
-        <activity android:name=".ProfileActivity" android:label="@string/app_name">
+        <activity android:name=".ProfileActivity" android:label="@string/app_profile_page">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
