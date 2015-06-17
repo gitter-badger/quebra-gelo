@@ -132,7 +132,7 @@
                 android:id="@+id/hidden_edit_bio"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_height="105dp"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:inputType="textMultiLine" />
     </ViewSwitcher>
     <!-- / Bio part -->
