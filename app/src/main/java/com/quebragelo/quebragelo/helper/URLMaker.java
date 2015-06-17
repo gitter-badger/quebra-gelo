@@ -11,8 +11,12 @@ public class URLMaker {
         URL url = null;
 
         try {
-            String part = Constraint.WEB_API_DOMAIN + Constraint.WEB_API_VERSION;
-            url = new URL(part + addressable.getPath());
+            String part = Constraint.WEB_API_DOMAIN + Constraint.WEB_API_VERSION + addressable.getPath();
+
+            if (addressable.hasId())
+                url = new URL(part + addressable.getId());
+            else
+                url = new URL(part);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 import com.facebook.FacebookSdk;
 import com.quebragelo.quebragelo.helper.Constraint;
 import com.quebragelo.quebragelo.task.ImageDownloaderTask;
 import com.quebragelo.quebragelo.task.LoadPersonTask;
+import com.quebragelo.quebragelo.task.UpdatePersonTask;
 import com.quebragelo.quebragelo.vo.PersonVO;
 import com.software.shell.fab.ActionButton;
 
@@ -22,24 +24,62 @@ public class ProfileActivity extends Activity {
     private PersonVO currentUser;
     private ActionButton actionButton;
 
+    private EditText editBirthday;
+    private TextView viewBirthday;
+    private SimpleDateFormat format;
+    private ViewSwitcher birthdaySwitcher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        try {
-            FacebookSdk.sdkInitialize(getApplicationContext());
-            setContentView(R.layout.activity_profile);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        setContentView(R.layout.activity_profile);
 
-            LoadPersonTask task = new LoadPersonTask(this);
-            currentUser = task.execute().get();
+        format = new SimpleDateFormat("dd/MM/yyyy");
 
-            actionButton = (ActionButton) findViewById(R.id.action_button);
-            actionButton.hide();
+        actionButton = (ActionButton) findViewById(R.id.action_button);
+        editBirthday = (EditText) findViewById(R.id.hidden_edit_birthday);
+        viewBirthday = (TextView) findViewById(R.id.label_birthday);
+        birthdaySwitcher = (ViewSwitcher) findViewById(R.id.birthday_switcher);
 
-            loadUserInfos();
+        turnRedButton();
+        loadUserInfos();
+        loadPerson();
+    }
+
+    public void loadPerson(){
+        try{
+            this.currentUser = new LoadPersonTask(this).execute().get();
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void turnRedButton(){
+        actionButton.setButtonColor(getResources().getColor(R.color.fab_material_red_500));
+        actionButton.setButtonColorPressed(getResources().getColor(R.color.fab_material_red_900));
+        actionButton.setImageResource(R.drawable.ic_mode_edit_white_18dp);
+
+        if (actionButton.getButtonColor() != getResources().getColor(R.color.fab_material_red_500))
+            turnShowableView();
+    }
+
+    public void turnGreenButton(View view){
+        actionButton.setButtonColor(getResources().getColor(R.color.fab_material_green_500));
+        actionButton.setButtonColorPressed(getResources().getColor(R.color.fab_material_green_900));
+        actionButton.setImageResource(R.drawable.ic_done_white_18dp);
+
+        turnEditableView();
+        loadUserInfos();
+
+        actionButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        updateInfos(view);
+                    }
+                });
     }
 
     private void loadUserInfos(){
@@ -55,25 +95,36 @@ public class ProfileActivity extends Activity {
             TextView editBio = (TextView) findViewById(R.id.edit_bio);
             editBio.setText(currentUser.getBio());
 
-            TextView editBirthday = (TextView) findViewById(R.id.label_birthday);
-            SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
-            editBirthday.setText(dt.format(currentUser.getBirthdayAt()));
+            editBirthday.setText(format.format(currentUser.getBirthdayAt()));
+            viewBirthday.setText(format.format(currentUser.getBirthdayAt()));
 
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public void birthdayViewClicked(View view) {
-        ViewSwitcher switcher = (ViewSwitcher) findViewById(R.id.birthday_switcher);
-        switcher.showNext(); //or switcher.showPrevious();
-        TextView myTV = (TextView) switcher.findViewById(R.id.label_birthday);
-        myTV.setText("value");
+    public void updateInfos(View view){
+        try {
+            PersonVO person = new PersonVO();
+            person.setApiId(currentUser.getApiId());
 
-        TextView editBirthday = (TextView) findViewById(R.id.hidden_edit_birthday);
-        SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy");
-        editBirthday.setText(dt.format(currentUser.getBirthdayAt()));
+            person.setBirthdayAt(format.parse(editBirthday.getText().toString()));
 
-        this.actionButton.show();
+            new UpdatePersonTask().execute(person);
+
+            loadPerson();
+            turnRedButton();
+            turnShowableView();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void turnShowableView(){
+        birthdaySwitcher.showPrevious();
+    }
+
+    public void turnEditableView(){
+        birthdaySwitcher.showNext();
     }
 }

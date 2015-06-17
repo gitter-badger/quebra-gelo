@@ -1,5 +1,6 @@
 package com.quebragelo.quebragelo.vo;
 
+import com.google.gson.annotations.SerializedName;
 import com.quebragelo.quebragelo.helper.WebAddressable;
 
 /**
@@ -7,9 +8,19 @@ import com.quebragelo.quebragelo.helper.WebAddressable;
  */
 public class LocationVO implements WebAddressable {
 
+    @SerializedName("api_id")
+    private int apiId;
     private Long longitude;
     private Long latitude;
     private PersonVO person;
+
+    public int getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(int apiId) {
+        this.apiId = apiId;
+    }
 
     public PersonVO getPerson() {
         return person;
@@ -38,5 +49,16 @@ public class LocationVO implements WebAddressable {
     @Override
     public String getPath() {
         return "location/";
+    }
+
+
+    @Override
+    public Boolean hasId() {
+        return getApiId() > 0;
+    }
+
+    @Override
+    public int getId() {
+        return getApiId();
     }
 }

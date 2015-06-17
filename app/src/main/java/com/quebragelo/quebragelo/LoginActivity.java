@@ -131,7 +131,7 @@ public class LoginActivity extends Activity {
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         try {
                             person.setFbAccessToken(accessToken.getToken());
-                            person.setUserID(accessToken.getUserId());
+                            person.setUserId(accessToken.getUserId());
 
                             if (object.has("email"))
                                 person.setEmail(object.getString("email"));
