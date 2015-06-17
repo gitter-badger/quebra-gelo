@@ -1,9 +1,8 @@
 package com.quebragelo.quebragelo;
 
 import android.app.Activity;
-import android.graphics.*;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.widget.ImageView;
 import com.facebook.FacebookSdk;
 import com.quebragelo.quebragelo.helper.Constraint;
 import com.quebragelo.quebragelo.task.ImageDownloaderTask;
@@ -25,7 +24,7 @@ public class ProfileActivity extends Activity {
             LoadPersonTask task = new LoadPersonTask(this);
             PersonVO currentUser = task.execute().get();
 
-            ImageView imageView = (ImageView) findViewById(R.id.profile_image);
+            RoundedImageView imageView = (RoundedImageView) findViewById(R.id.profile_image);
             Bitmap image = new ImageDownloaderTask().execute(currentUser.getImageLink(Constraint.PROFILE_IMAGE_LARGE)).get();
 
             imageView.setImageBitmap(image);
