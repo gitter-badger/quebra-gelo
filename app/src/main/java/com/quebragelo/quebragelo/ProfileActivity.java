@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 import com.facebook.FacebookSdk;
 import com.quebragelo.quebragelo.helper.Constraint;
@@ -24,36 +25,56 @@ public class ProfileActivity extends Activity {
     private PersonVO currentUser;
     private ActionButton actionButton;
 
+    private RoundedImageView imageView;
+
     private EditText editBirthday;
     private TextView viewBirthday;
-    private SimpleDateFormat format;
     private ViewSwitcher birthdaySwitcher;
+
+    private EditText editName;
+    private TextView viewName;
+    private ViewSwitcher nameSwitcher;
+
+    private EditText editBio;
+    private TextView viewBio;
+    private ViewSwitcher bioSwitcher;
+
+    private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.activity_profile);
+        try {
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            setContentView(R.layout.activity_profile);
 
-        format = new SimpleDateFormat("dd/MM/yyyy");
+            currentUser = new LoadPersonTask(this).execute().get();
+
+            initializeElements();
+            turnRedButton();
+            loadUserInfos();
+        } catch (Exception e) {
+           Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void initializeElements(){
+        imageView = (RoundedImageView) findViewById(R.id.profile_image);
 
         actionButton = (ActionButton) findViewById(R.id.action_button);
+
         editBirthday = (EditText) findViewById(R.id.hidden_edit_birthday);
         viewBirthday = (TextView) findViewById(R.id.label_birthday);
         birthdaySwitcher = (ViewSwitcher) findViewById(R.id.birthday_switcher);
 
-        turnRedButton();
-        loadUserInfos();
-        loadPerson();
-    }
+        editName = (EditText) findViewById(R.id.hidden_edit_name);
+        viewName = (TextView) findViewById(R.id.label_name);
+        nameSwitcher = (ViewSwitcher) findViewById(R.id.name_switcher);
 
-    public void loadPerson(){
-        try{
-            this.currentUser = new LoadPersonTask(this).execute().get();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        editBio = (EditText) findViewById(R.id.hidden_edit_bio);
+        viewBio = (TextView) findViewById(R.id.label_bio);
+        bioSwitcher = (ViewSwitcher) findViewById(R.id.bio_switcher);
     }
 
     public void turnRedButton(){
@@ -84,20 +105,17 @@ public class ProfileActivity extends Activity {
 
     private void loadUserInfos(){
         try{
-            RoundedImageView imageView = (RoundedImageView) findViewById(R.id.profile_image);
             Bitmap image = new ImageDownloaderTask().execute(currentUser.getImageLink(Constraint.PROFILE_IMAGE_LARGE)).get();
-
             imageView.setImageBitmap(image);
 
-            TextView labelName = (TextView) findViewById(R.id.label_name);
-            labelName.setText(currentUser.getName());
+            viewName.setText(currentUser.getName());
+            editName.setText(currentUser.getName());
 
-            TextView editBio = (TextView) findViewById(R.id.edit_bio);
+            viewBio.setText(currentUser.getBio());
             editBio.setText(currentUser.getBio());
 
             editBirthday.setText(format.format(currentUser.getBirthdayAt()));
             viewBirthday.setText(format.format(currentUser.getBirthdayAt()));
-
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -109,10 +127,11 @@ public class ProfileActivity extends Activity {
             person.setApiId(currentUser.getApiId());
 
             person.setBirthdayAt(format.parse(editBirthday.getText().toString()));
+            person.setBio(editBio.getText().toString());
+            person.setName(editName.getText().toString());
 
             new UpdatePersonTask().execute(person);
 
-            loadPerson();
             turnRedButton();
             turnShowableView();
         } catch (Exception e) {
@@ -122,9 +141,13 @@ public class ProfileActivity extends Activity {
 
     public void turnShowableView(){
         birthdaySwitcher.showPrevious();
+        bioSwitcher.showPrevious();
+        nameSwitcher.showPrevious();
     }
 
     public void turnEditableView(){
         birthdaySwitcher.showNext();
+        bioSwitcher.showNext();
+        nameSwitcher.showNext();
     }
 }
