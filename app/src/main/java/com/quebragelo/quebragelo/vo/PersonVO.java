@@ -1,5 +1,6 @@
 package com.quebragelo.quebragelo.vo;
 
+import android.net.Uri;
 import com.quebragelo.quebragelo.helper.JSONSerializer;
 import com.quebragelo.quebragelo.helper.WebAddressable;
 
@@ -13,12 +14,30 @@ public class PersonVO extends JSONSerializer implements WebAddressable {
     private String bio;
     private Date birthday_at;
     private String email;
+    private String user_id;
     private String image;
     private String phone;
     private LocationVO location;
     private String name;
     private StatusVO status;
     private String fb_access_token;
+
+    public static PersonVO load(String userID){
+        // query the api to search by user with this query: people/find_by?hash[user_id]=925639297460
+//        LoadPersonTask task = new LoadPersonTask();
+//        task.execute();
+//
+//        return task.getPersonVO();
+        return null;
+    }
+
+    public String getUserID() {
+        return user_id;
+    }
+
+    public void setUserID(String userID) {
+        this.user_id = userID;
+    }
 
     public String getFbAccessToken() {
         return fb_access_token;
@@ -90,6 +109,11 @@ public class PersonVO extends JSONSerializer implements WebAddressable {
 
     public void setStatus(StatusVO status) {
         this.status = status;
+    }
+
+    // type could be: square, small, normal, large see Constraint class.
+    public Uri getImageLink(String type){
+        return Uri.parse("https://graph.facebook.com" + getImage() + "?type=" + type);
     }
 
     @Override
