@@ -3,7 +3,7 @@ package com.quebragelo.quebragelo.task;
 import android.os.AsyncTask;
 import com.facebook.AccessToken;
 import com.google.gson.*;
-import com.quebragelo.quebragelo.ProfileActivity;
+import com.quebragelo.quebragelo.activity.ProfileActivity;
 import com.quebragelo.quebragelo.helper.URLMaker;
 import com.quebragelo.quebragelo.vo.PersonVO;
 

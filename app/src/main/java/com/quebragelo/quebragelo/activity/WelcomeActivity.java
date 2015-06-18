@@ -1,4 +1,4 @@
-package com.quebragelo.quebragelo;
+package com.quebragelo.quebragelo.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.os.Handler;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.FacebookSdk;
+import com.quebragelo.quebragelo.R;
 
 /**
  * Created by bruno on 15/06/15.

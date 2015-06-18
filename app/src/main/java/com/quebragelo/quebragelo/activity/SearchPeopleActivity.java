@@ -1,4 +1,4 @@
-package com.quebragelo.quebragelo;
+package com.quebragelo.quebragelo.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.TextView;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.quebragelo.quebragelo.R;
 
 /**
  * Created by bruno on 14/06/15.

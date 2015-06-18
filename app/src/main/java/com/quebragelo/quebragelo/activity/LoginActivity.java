@@ -1,4 +1,4 @@
-package com.quebragelo.quebragelo;
+package com.quebragelo.quebragelo.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import com.facebook.*;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.quebragelo.quebragelo.R;
 import com.quebragelo.quebragelo.helper.Constraint;
 import com.quebragelo.quebragelo.task.AddPersonTask;
 import com.quebragelo.quebragelo.vo.PersonVO;
@@ -33,7 +34,7 @@ public class LoginActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.activity_main);
+        setContentView(com.quebragelo.quebragelo.R.layout.activity_login);
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
         setImprovedIcon(loginButton);
@@ -76,19 +77,6 @@ public class LoginActivity extends Activity {
 
         ImageView img = (ImageView) findViewById(R.id.imageView);
         img.setImageResource(R.mipmap.image_grid);
-
-//        int[] lista = new int[]{R.mipmap.picture_01, R.mipmap.picture_02, R.mipmap.picture_03};
-
-//        GridView gv = (GridView) findViewById(R.id.personView);
-//        gv.setAdapter(new PictureAdapter(this, lista));
-
-
-//        gv.setOnItemClickListener(new GridView.OnItemClickListener(){
-//            @Override
-//            public void onItemClick(AdapterView parent, View view, int position, long id) {
-//                Toast.makeText(getBaseContext(), "Imagem" + (position + 1), Toast.LENGTH_SHORT).show();
-//            }
-//        } );
     }
 
     private void setImprovedIcon(LoginButton loginButton) {

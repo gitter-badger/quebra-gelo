@@ -1,4 +1,4 @@
-package com.quebragelo.quebragelo;
+package com.quebragelo.quebragelo.activity;
 
 import android.content.Context;
 import android.graphics.*;

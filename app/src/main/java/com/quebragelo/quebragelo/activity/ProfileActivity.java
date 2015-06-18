@@ -1,4 +1,4 @@
-package com.quebragelo.quebragelo;
+package com.quebragelo.quebragelo.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 import com.facebook.FacebookSdk;
+import com.quebragelo.quebragelo.R;
 import com.quebragelo.quebragelo.helper.Constraint;
 import com.quebragelo.quebragelo.task.ImageDownloaderTask;
 import com.quebragelo.quebragelo.task.LoadPersonTask;
