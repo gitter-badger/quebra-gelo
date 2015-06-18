@@ -12,7 +12,7 @@ import java.net.URL;
 /**
  * Created by bruno on 11/06/15.
  */
-public class AddPersonTask extends AsyncTask<PersonVO, Void, Void> {
+public class UpdatePersonTask extends AsyncTask<PersonVO, Void, Void> {
 
     @Override
     protected Void doInBackground(PersonVO... params) {
@@ -24,7 +24,7 @@ public class AddPersonTask extends AsyncTask<PersonVO, Void, Void> {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setReadTimeout(10000);
             con.setConnectTimeout(15000);
-            con.setRequestMethod("POST");
+            con.setRequestMethod("PUT");
 
             con.setDoInput(true);
             con.setDoOutput(false);
@@ -40,10 +40,10 @@ public class AddPersonTask extends AsyncTask<PersonVO, Void, Void> {
 
             os.close();
             con.disconnect();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return null;
     }
 }

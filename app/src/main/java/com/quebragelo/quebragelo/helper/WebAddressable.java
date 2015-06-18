@@ -6,4 +6,6 @@ package com.quebragelo.quebragelo.helper;
 public interface WebAddressable {
 
     String getPath();
+    Boolean hasId();
+    int getId();
 }

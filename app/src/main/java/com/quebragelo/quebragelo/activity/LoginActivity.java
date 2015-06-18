@@ -1,38 +1,32 @@
-package com.quebragelo.quebragelo;
+package com.quebragelo.quebragelo.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.View;
+import android.support.v4.content.ContextCompat;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.facebook.*;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.quebragelo.quebragelo.adapter.PictureAdapter;
+import com.quebragelo.quebragelo.R;
 import com.quebragelo.quebragelo.helper.Constraint;
 import com.quebragelo.quebragelo.task.AddPersonTask;
 import com.quebragelo.quebragelo.vo.PersonVO;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-public class MainActivity extends Activity {
+public class LoginActivity extends Activity {
 
     private CallbackManager callbackManager;
-    private ProfileTracker profileTracker;
     private PersonVO person;
-    private AddPersonTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +34,12 @@ public class MainActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.activity_main);
+        setContentView(com.quebragelo.quebragelo.R.layout.activity_login);
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        setImprovedIcon(loginButton);
 
         loginButton.setReadPermissions(Arrays.asList("user_status", "user_birthday", "email", "user_about_me"));
-
-        task = new AddPersonTask(this);
 
         callbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(callbackManager,
@@ -55,13 +48,11 @@ public class MainActivity extends Activity {
                     public void onSuccess(final LoginResult loginResult) {
                         person = new PersonVO();
 
-                        profileTracker = new ProfileTracker() {
+                        new ProfileTracker() {
                             @Override
-                            protected void onCurrentProfileChanged(
-                                    Profile oldProfile,
-                                    Profile currentProfile) {
-
-                                person.setImage(currentProfile.getProfilePictureUri(Constraint.PROFILE_IMAGE_WIDTH, Constraint.PROFILE_IMAGE_HEIGHT).getPath());
+                            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                                person.setImage(currentProfile.getProfilePictureUri(Constraint.PROFILE_IMAGE_WIDTH,
+                                        Constraint.PROFILE_IMAGE_HEIGHT).getPath());
 
                                 createPerson(loginResult.getAccessToken());
                             }
@@ -80,34 +71,32 @@ public class MainActivity extends Activity {
                 });
 
         TextView txt = (TextView) findViewById(R.id.txtTitle);
-        Typeface font = Typeface.createFromAsset(getAssets(), "Generally Speaking.ttf" );
+        Typeface font = Typeface.createFromAsset(getAssets(), "Generally Speaking.ttf");
+        txt.setTextSize(102);
         txt.setTypeface(font);
 
-        int[] lista = new int[]{R.mipmap.picture_01, R.mipmap.picture_02, R.mipmap.picture_03};
+        ImageView img = (ImageView) findViewById(R.id.imageView);
+        img.setImageResource(R.mipmap.image_grid);
+    }
 
-        GridView gv = (GridView) findViewById(R.id.personView);
-        gv.setAdapter(new PictureAdapter(this, lista));
+    private void setImprovedIcon(LoginButton loginButton) {
+        float fbIconScale = 2.05F;
+        Drawable drawable = ContextCompat.getDrawable(this, com.facebook.R.drawable.com_facebook_button_icon);
 
+        drawable.setBounds(0, 0, (int) (drawable.getIntrinsicWidth() * fbIconScale), (int) (drawable.getIntrinsicHeight() * fbIconScale));
+        loginButton.setCompoundDrawables(drawable, null, null, null);
 
-        gv.setOnItemClickListener(new GridView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), "Imagem" + (position + 1), Toast.LENGTH_SHORT).show();
-            }
-        } );
+        loginButton.setCompoundDrawablePadding(this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_textpadding));
+
+        loginButton.setPadding(this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_lr),
+                this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_top), 0,
+                this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_bottom));
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     @Override
@@ -132,16 +121,25 @@ public class MainActivity extends Activity {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         try {
-                            person.setEmail(object.getString("email"));
                             person.setFbAccessToken(accessToken.getToken());
-                            person.setName(object.getString("name"));
-//                          person.setBio(object.getString("bio"));
+                            person.setUserId(accessToken.getUserId());
+
+                            if (object.has("email"))
+                                person.setEmail(object.getString("email"));
+
+                            if (object.has("phone"))
+                                person.setPhone(object.getString("phone"));
+
+                            if (object.has("name"))
+                                person.setName(object.getString("name"));
+
+                            if (object.has("bio"))
+                                person.setBio(object.getString("bio"));
 
                             person.setBirthdayAt(new Date(new SimpleDateFormat("MM/dd/yyyy").parse(object.getString("birthday")).getTime()));
 
-                            task.execute(person);
-                        } catch (JSONException e) {
-                        } catch (ParseException e) {
+                            new AddPersonTask().execute(person);
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -151,12 +149,9 @@ public class MainActivity extends Activity {
         parameters.putString("fields", "id,name,link,email,bio,birthday,about");
         request.setParameters(parameters);
         request.executeAsync();
-    }
 
-    public void close(){
-        setResult(0);
-        // abrir ooutra activity
-//        finish();
+        Intent intent = new Intent(getApplicationContext(), SearchPeopleActivity.class);
+        startActivity(intent);
     }
 }
 

@@ -1,5 +1,7 @@
 package com.quebragelo.quebragelo.vo;
 
+import android.net.Uri;
+import com.google.gson.annotations.SerializedName;
 import com.quebragelo.quebragelo.helper.JSONSerializer;
 import com.quebragelo.quebragelo.helper.WebAddressable;
 
@@ -10,21 +12,52 @@ import java.util.Date;
  */
 public class PersonVO extends JSONSerializer implements WebAddressable {
 
+    @SerializedName("id")
+    private int apiId;
     private String bio;
-    private Date birthday_at;
+    @SerializedName("birthday_at")
+    private Date birthdayAt;
     private String email;
+    @SerializedName("user_id")
+    private String userId;
     private String image;
+    private String phone;
     private LocationVO location;
     private String name;
     private StatusVO status;
-    private String fb_access_token;
+    @SerializedName("fb_access_token")
+    private String fbAccessToken;
+
+    public int getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(int apiId) {
+        this.apiId = apiId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userID) {
+        this.userId = userID;
+    }
 
     public String getFbAccessToken() {
-        return fb_access_token;
+        return fbAccessToken;
     }
 
     public void setFbAccessToken(String fbAccessToken) {
-        this.fb_access_token = fbAccessToken;
+        this.fbAccessToken = fbAccessToken;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getImage() {
@@ -44,11 +77,11 @@ public class PersonVO extends JSONSerializer implements WebAddressable {
     }
 
     public Date getBirthdayAt() {
-        return birthday_at;
+        return birthdayAt;
     }
 
     public void setBirthdayAt(Date birthdayAt) {
-        this.birthday_at = birthdayAt;
+        this.birthdayAt = birthdayAt;
     }
 
     public String getEmail() {
@@ -83,9 +116,24 @@ public class PersonVO extends JSONSerializer implements WebAddressable {
         this.status = status;
     }
 
+    // type could be: square, small, normal, large see Constraint class.
+    public Uri getImageLink(String type){
+        return Uri.parse("https://graph.facebook.com" + getImage() + "?type=" + type);
+    }
+
     @Override
     public String getPath() {
         return "people/";
+    }
+
+    @Override
+    public Boolean hasId() {
+        return getApiId() > 0;
+    }
+
+    @Override
+    public int getId() {
+        return getApiId();
     }
 
     @Override

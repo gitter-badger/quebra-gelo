@@ -1,5 +1,6 @@
 package com.quebragelo.quebragelo.vo;
 
+import com.google.gson.annotations.SerializedName;
 import com.quebragelo.quebragelo.helper.WebAddressable;
 
 import java.util.Date;
@@ -9,9 +10,19 @@ import java.util.Date;
  */
 public class StatusVO implements WebAddressable {
 
+    @SerializedName("api_id")
+    private int apiId;
     private PersonVO person;
     private Date last;
     private Date lastLogged;
+
+    public int getApiId() {
+        return apiId;
+    }
+
+    public void setApiId(int apiId) {
+        this.apiId = apiId;
+    }
 
     public PersonVO getPerson() {
         return person;
@@ -40,5 +51,15 @@ public class StatusVO implements WebAddressable {
     @Override
     public String getPath() {
         return "statuses/";
+    }
+
+    @Override
+    public Boolean hasId() {
+        return getApiId() > 0;
+    }
+
+    @Override
+    public int getId() {
+        return getApiId();
     }
 }
