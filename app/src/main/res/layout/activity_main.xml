@@ -29,7 +29,8 @@
             android:layout_height="65dp"
             android:layout_gravity="center_horizontal"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true" android:layout_alignParentStart="true"/>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -41,8 +42,6 @@
             android:layout_below="@+id/txtTitle"
             android:layout_centerHorizontal="true" />
 
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
     <ImageView
             android:id="@+id/imageView"
             android:layout_width="50dip"

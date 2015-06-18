@@ -36,18 +36,7 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-
-        float fbIconScale = 2.05F;
-        Drawable drawable = ContextCompat.getDrawable(this, com.facebook.R.drawable.com_facebook_button_icon);
-
-        drawable.setBounds(0, 0, (int) (drawable.getIntrinsicWidth() * fbIconScale), (int) (drawable.getIntrinsicHeight() * fbIconScale));
-        loginButton.setCompoundDrawables(drawable, null, null, null);
-
-        loginButton.setCompoundDrawablePadding(this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_textpadding));
-
-        loginButton.setPadding(this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_lr),
-                this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_top), 0,
-                this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_bottom));
+        setImprovedIcon(loginButton);
 
         loginButton.setReadPermissions(Arrays.asList("user_status", "user_birthday", "email", "user_about_me"));
 
@@ -58,7 +47,7 @@ public class LoginActivity extends Activity {
                     public void onSuccess(final LoginResult loginResult) {
                         person = new PersonVO();
 
-                       new ProfileTracker() {
+                        new ProfileTracker() {
                             @Override
                             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                                 person.setImage(currentProfile.getProfilePictureUri(Constraint.PROFILE_IMAGE_WIDTH,
@@ -100,6 +89,20 @@ public class LoginActivity extends Activity {
 //                Toast.makeText(getBaseContext(), "Imagem" + (position + 1), Toast.LENGTH_SHORT).show();
 //            }
 //        } );
+    }
+
+    private void setImprovedIcon(LoginButton loginButton) {
+        float fbIconScale = 2.05F;
+        Drawable drawable = ContextCompat.getDrawable(this, com.facebook.R.drawable.com_facebook_button_icon);
+
+        drawable.setBounds(0, 0, (int) (drawable.getIntrinsicWidth() * fbIconScale), (int) (drawable.getIntrinsicHeight() * fbIconScale));
+        loginButton.setCompoundDrawables(drawable, null, null, null);
+
+        loginButton.setCompoundDrawablePadding(this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_textpadding));
+
+        loginButton.setPadding(this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_lr),
+                this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_top), 0,
+                this.getResources().getDimensionPixelSize(R.dimen.fb_margin_override_bottom));
     }
 
     @Override
@@ -160,7 +163,6 @@ public class LoginActivity extends Activity {
         request.executeAsync();
 
         Intent intent = new Intent(getApplicationContext(), SearchPeopleActivity.class);
-        // set any content here to be used in all application.
         startActivity(intent);
     }
 }
