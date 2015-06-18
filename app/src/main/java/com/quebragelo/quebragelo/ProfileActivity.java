@@ -1,9 +1,14 @@
 package com.quebragelo.quebragelo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.view.GestureDetectorCompat;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,11 +44,15 @@ public class ProfileActivity extends Activity {
     private TextView viewBio;
     private ViewSwitcher bioSwitcher;
 
+    private GestureDetectorCompat gestureDetectorCompat;
+
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        gestureDetectorCompat = new GestureDetectorCompat(this, new MyGestureListener());
 
         try {
             FacebookSdk.sdkInitialize(getApplicationContext());
@@ -55,7 +64,7 @@ public class ProfileActivity extends Activity {
             turnRedButton();
             loadUserInfos();
         } catch (Exception e) {
-           Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -150,4 +159,30 @@ public class ProfileActivity extends Activity {
         bioSwitcher.showNext();
         nameSwitcher.showNext();
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        this.gestureDetectorCompat.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
+    class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+       @Override
+        public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
+
+            if(event2.getX() < event1.getX()){
+                Intent intent = new Intent(ProfileActivity.this, SearchPeopleActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+            }
+            return true;
+        }
+    }
 }
+
+
+
+
+
+
+

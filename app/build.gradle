@@ -29,4 +29,5 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.0.0'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.github.shell-software:fab:1.1.2'
+    compile 'com.github.rahatarmanahmed:circularprogressview:2.3.2'
 }

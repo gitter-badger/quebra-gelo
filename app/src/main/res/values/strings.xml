@@ -17,4 +17,6 @@
     <string name="tags_icon_alt">Tags</string>
 
     <string name="label_name_default">Person\'s name!</string>
+
+    <string name="searching_people_text">Searching for people...</string>
 </resources>
